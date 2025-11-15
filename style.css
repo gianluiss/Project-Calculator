@@ -1,0 +1,88 @@
+body {
+    background-color: black;
+    display: flex;
+    justify-content: center;
+}
+
+#calc-container {
+    background-color: black;
+    width: 430px;
+    height: 700px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border: 3px solid slategray;
+}
+
+#display {
+    width: 400px;
+    height: 100px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
+
+    color: whitesmoke;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+
+
+    border: 3px solid slategray;
+}
+
+#expression {
+    font-size: 50px;
+    margin-right: 15px;
+}
+
+#answer {
+    font-size: 30px;
+    margin-right: 15px;
+    color: rgb(252, 170, 170);
+}
+
+
+#button-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.button {
+    /*border: 3px solid slateblue;*/
+    border-radius: 50%;
+    width: 85px;
+    height: 85px;
+    margin: 5px;
+
+    background-color: rgb(39, 47, 54);
+    color: whitesmoke;
+    font-family: 'Nunito', sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+
+    text-align: center;
+    line-height: 85px;
+}
+
+#all-clear {
+    background-color: rgb(69, 61, 121);
+}
+
+#clear {
+    background-color: rgb(209, 146, 146);
+    color: rgb(143, 64, 64);
+}
+
+#equals {
+    background-color: rgb(69, 61, 121);
+}
+
+.button.operation {
+    background-color: rgb(62, 76, 88);
+}
