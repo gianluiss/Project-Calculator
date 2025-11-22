@@ -1,4 +1,7 @@
 let calculator = {
+    numberStack: [],
+    operatorStack: [],
+
     add: function(a, b) { return a + b },
     subtract: function(a, b) { return a - b },
     multiply: function(a, b) { return a * b },
@@ -51,34 +54,56 @@ function setupEvents() {
 // HANDLERS (Events  + UI Logic)
 // ------------------------------------
 function handleButtonClick(event) {
-    //console.log(event.target.textContent);
     const btn = event.target;
+    //console.log(btn.id); //for debug
 
-    console.log(btn.id);
+    console.log(expression.textContent.split(" ")); //WILL USE THIS FOR COMPUTATION
+
 
     if(btn.id === "all-clear") {
-        expression.textContent = "";
+        expression.textContent = "0";
     }
+
     if(btn.id === "clear") {
         expression.textContent = expression.textContent.slice(0, expression.textContent.length-1);
+        if(expression.textContent === "")
+            expression.textContent = "0";
     }
 
-    //console.log(btn.className);
-    if(btn.className === "button operation") {
-        //console.log("button operation");
+    const isSpace = expression.textContent.at(expression.textContent.length-1) === ' ';
+    if(btn.className === "button operation" && !isSpace) {
+        switch(btn.textContent) {
+            case '+':
+                expression.textContent += ' + ';
+                break;
+            case '-':
+                expression.textContent += ' - ';
+                break;
+            case '÷':
+                expression.textContent += ' ÷ ';
+                break;
+            case 'x':
+                expression.textContent += ' x ';
+                break;
+        }
     }
 
-    switch(btn.textContent) {
-        case '0': expression.textContent += '0'; break;
-        case '1': expression.textContent += '1'; break;
-        case '2': expression.textContent += '2'; break;
-        case '3': expression.textContent += '3'; break;
-        case '4': expression.textContent += '4'; break;
-        case '5': expression.textContent += '5'; break;
-        case '6': expression.textContent += '6'; break;
-        case '7': expression.textContent += '7'; break;
-        case '8': expression.textContent += '8'; break;
-        case '9': expression.textContent += '9'; break;
+    if(btn.className === "button number") {
+        if(expression.textContent === "0") 
+            expression.textContent = "";
+
+        switch(btn.textContent) {
+            case '0': expression.textContent += '0'; break;
+            case '1': expression.textContent += '1'; break;
+            case '2': expression.textContent += '2'; break;
+            case '3': expression.textContent += '3'; break;
+            case '4': expression.textContent += '4'; break;
+            case '5': expression.textContent += '5'; break;
+            case '6': expression.textContent += '6'; break;
+            case '7': expression.textContent += '7'; break;
+            case '8': expression.textContent += '8'; break;
+            case '9': expression.textContent += '9'; break;
+        }
     }
 }
 
