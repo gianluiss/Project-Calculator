@@ -1,13 +1,13 @@
 body {
-    background-color: black;
+    background-color: rgb(42, 55, 68);
     display: flex;
     justify-content: center;
 }
 
 #calc-container {
-    background-color: black;
+    background-color: rgb(0, 0, 0);
     width: 430px;
-    height: 700px;
+    height: 685px;
 
     display: flex;
     flex-direction: column;
@@ -15,11 +15,14 @@ body {
     align-items: center;
 
     border: 3px solid slategray;
+    border-radius: 30px;
 }
 
 #display {
-    width: 400px;
+    background-color: rgb(41, 66, 33);
+    width: 370px;
     height: 100px;
+    margin-bottom: 25px;
 
     display: flex;
     flex-direction: column;
@@ -30,8 +33,7 @@ body {
     font-family: 'Nunito', sans-serif;
     font-weight: 600;
 
-
-    border: 3px solid slategray;
+    border-radius: 5px;
 }
 
 #expression {
