@@ -37,6 +37,7 @@ const expression = document.querySelector('#expression');
 // ------------------------------------
 function init() {
     setupEvents();
+    //updateUI(); //will alter everything so that I store everything first instead of modifying the UI immediately.
 }
 
 init();
@@ -59,13 +60,18 @@ function handleButtonClick(event) {
 
     console.log(expression.textContent.split(" ")); //WILL USE THIS FOR COMPUTATION
 
-
     if(btn.id === "all-clear") {
         expression.textContent = "0";
     }
 
     if(btn.id === "clear") {
-        expression.textContent = expression.textContent.slice(0, expression.textContent.length-1);
+        if(expression.textContent.at(length-1) === ' ') {
+            expression.textContent = expression.textContent.slice(0, expression.textContent.length - 3);
+        }
+        else {
+            expression.textContent = expression.textContent.slice(0, expression.textContent.length - 1);
+        }
+
         if(expression.textContent === "")
             expression.textContent = "0";
     }
