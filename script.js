@@ -31,13 +31,29 @@ let calculator = {
 // ------------------------------------
 const buttons = document.querySelectorAll('.button');
 const expression = document.querySelector('#expression');
+const answer = document.querySelector('#answer');
+
+
+// ------------------------------------
+// STATE
+// ------------------------------------
+let expr = '0';
+let ans = '0';
+
+// ------------------------------------
+// UPDATE UI
+// ------------------------------------
+function updateUI() {
+    expression.textContent = expr;   
+    answer.textContent = ans;
+}
 
 // ------------------------------------
 // INIT
 // ------------------------------------
 function init() {
     setupEvents();
-    //updateUI(); //will alter everything so that I store everything first instead of modifying the UI immediately.
+    updateUI(); //will alter everything so that I store everything first instead of modifying the UI immediately.
 }
 
 init();
@@ -54,65 +70,67 @@ function setupEvents() {
 // ------------------------------------
 // HANDLERS (Events  + UI Logic)
 // ------------------------------------
+
 function handleButtonClick(event) {
     const btn = event.target;
-    //console.log(btn.id); //for debug
+    console.log(btn.textContent); //for debug
 
-    console.log(expression.textContent.split(" ")); //WILL USE THIS FOR COMPUTATION
+    //console.log(expr.split(" ")); //WILL USE THIS FOR COMPUTATION
 
     if(btn.id === "all-clear") {
-        expression.textContent = "0";
+        expr = "0";
     }
 
     if(btn.id === "clear") {
-        if(expression.textContent.at(length-1) === ' ') {
-            expression.textContent = expression.textContent.slice(0, expression.textContent.length - 3);
+        if(expr.at(length-1) === ' ') {
+            expr = expr.slice(0, expr.length - 3);
         }
         else {
-            expression.textContent = expression.textContent.slice(0, expression.textContent.length - 1);
+            expr = expr.slice(0, expr.length - 1);
         }
 
-        if(expression.textContent === "")
-            expression.textContent = "0";
+        if(expr === "") {
+            expr = "0";
+        }
     }
 
-    const isSpace = expression.textContent.at(expression.textContent.length-1) === ' ';
+    const isSpace = expr.at(expr.length-1) === ' ';
     if(btn.className === "button operation" && !isSpace) {
         switch(btn.textContent) {
             case '+':
-                expression.textContent += ' + ';
+                expr += ' + ';
                 break;
             case '-':
-                expression.textContent += ' - ';
+                expr += ' - ';
                 break;
             case '÷':
-                expression.textContent += ' ÷ ';
+                expr += ' ÷ ';
                 break;
             case 'x':
-                expression.textContent += ' x ';
+                expr += ' x ';
                 break;
         }
     }
 
     if(btn.className === "button number") {
-        if(expression.textContent === "0") 
-            expression.textContent = "";
+        if(expr === "0") 
+            expr = "";
 
         switch(btn.textContent) {
-            case '0': expression.textContent += '0'; break;
-            case '1': expression.textContent += '1'; break;
-            case '2': expression.textContent += '2'; break;
-            case '3': expression.textContent += '3'; break;
-            case '4': expression.textContent += '4'; break;
-            case '5': expression.textContent += '5'; break;
-            case '6': expression.textContent += '6'; break;
-            case '7': expression.textContent += '7'; break;
-            case '8': expression.textContent += '8'; break;
-            case '9': expression.textContent += '9'; break;
+            case '0': expr += '0'; break;
+            case '1': expr += '1'; break;
+            case '2': expr += '2'; break;
+            case '3': expr += '3'; break;
+            case '4': expr += '4'; break;
+            case '5': expr += '5'; break;
+            case '6': expr += '6'; break;
+            case '7': expr += '7'; break;
+            case '8': expr += '8'; break;
+            case '9': expr += '9'; break;
         }
     }
+    updateUI();
 }
-
 
 
 // ------------------------------------
