@@ -1,4 +1,4 @@
-let calculator = {
+const calculator = {
     numberStack: [],
     operatorStack: [],
 
@@ -39,6 +39,7 @@ const answer = document.querySelector('#answer');
 // ------------------------------------
 let expr = '0';
 let ans = '0';
+let exprArr = [];
 
 // ------------------------------------
 // UPDATE UI
@@ -70,11 +71,11 @@ function setupEvents() {
 // ------------------------------------
 // HANDLERS (Events  + UI Logic)
 // ------------------------------------
-
 function handleButtonClick(event) {
     const btn = event.target;
-    console.log(btn.textContent); //for debug
-
+    let currentIndex = exprArr.length-1;
+    //console.log(exprArr);
+    //console.log(btn.textContent); //for debug
     //console.log(expr.split(" ")); //WILL USE THIS FOR COMPUTATION
 
     if(btn.id === "all-clear") {
@@ -92,6 +93,14 @@ function handleButtonClick(event) {
         if(expr === "") {
             expr = "0";
         }
+    }
+
+    //console.log(exprArr);
+    if(btn.id === 'decimal' && !exprArr[currentIndex].includes('.')) {
+        expr += '.';
+
+        //NOTE: BUGS TO WATCH OUT FOR 
+        //e.g 5 + . SHOULD OUTPUT ERROR
     }
 
     const isSpace = expr.at(expr.length-1) === ' ';
@@ -129,8 +138,17 @@ function handleButtonClick(event) {
             case '9': expr += '9'; break;
         }
     }
+
+    if(btn.id === 'equals') {
+
+    }
+
+    exprArr = expr.split(' ');
+    //console.log(exprArr);
     updateUI();
 }
+
+console.log(Number('5 + 2'));
 
 
 // ------------------------------------
