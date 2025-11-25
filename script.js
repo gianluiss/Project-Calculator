@@ -6,7 +6,7 @@ const calc = {
     add: function(a, b) { return a + b },
     subtract: function(a, b) { return a - b },
     multiply: function(a, b) { return a * b },
-    divide: function(a, b) { return a / b },
+    divide: function(a, b) { return a / b},
 
     operate: function(operator, a, b) {
         switch(operator) {
@@ -44,15 +44,28 @@ const answer = document.querySelector('#answer');
 // STATE
 // ------------------------------------
 let expr = '0';
-let ans = '0';
+let ans = '';
+let ansPreview = '';
 let exprArr = [];
 
 // ------------------------------------
 // UPDATE UI
 // ------------------------------------
 function updateUI() {
-    expression.textContent = expr;   
-    answer.textContent = ans;
+    if(Number.isNaN(ansPreview) && !calc.availableOperations.includes(exprArr[exprArr.length-2])) {
+        expression.style.color = 'rgb(252, 170, 170)';
+        expression.textContent = expr;
+        answer.textContent = '';
+    }
+    else {
+        expression.style.color = 'whitesmoke';
+        expression.textContent = expr;
+        answer.textContent = !Number.isNaN(ansPreview) ? ansPreview : '';
+    }
+    /*
+    expression.textContent = expr;
+    //answer.textContent = !Number.isNaN(ansPreview) ? ansPreview : '';
+    */
 }
 
 // ------------------------------------
@@ -86,7 +99,7 @@ function handleButtonClick(event) {
 
     if(btn.id === "all-clear") {
         expr = "0";
-        ans = "0";
+        ans = "";
     }
 
     if(btn.id === "clear") {
@@ -99,7 +112,7 @@ function handleButtonClick(event) {
 
         if(expr === "") {
             expr = "0";
-            ans = "0";
+            ans = "";
         }
     }
 
@@ -111,7 +124,7 @@ function handleButtonClick(event) {
         //e.g 5 + . SHOULD OUTPUT ERROR
     }
 
-    const isSpace = expr.at(expr.length-1) === ' ';
+    const isSpace = expr[expr.length-1] === ' ';
     if(btn.className === "button operation" && !isSpace) {
         switch(btn.textContent) {
             case '+':
@@ -151,21 +164,25 @@ function handleButtonClick(event) {
 
     if(btn.id === 'equals') {
         convertInfixToPostfix(exprArr, calc.opStack, calc.postfix);
-        console.log(`Expr: ${expr} | Post: ${calc.postfix}`);
-
-        //DO CALC METHODS HERE LIKE OUTPUTTING ANSWER AND RESOLVING
-        //DO CALC METHODS HERE LIKE OUTPUTTING ANSWER AND RESOLVING
-        //DO CALC METHODS HERE LIKE OUTPUTTING ANSWER AND RESOLVING
         ans = evaluatePostfix(calc.postfix);
-
+        expr = String(ans).slice();
         calc.postfix = [];
+
+        ansPreview = NaN;
+        exprArr = expr.split(' ');
+        updateUI();
+        //console.log(`AnsPrev: ${ansPreview} | Ans: ${ans}`);
     }
+    else {
+        //for answer preview without pressing equals
+        convertInfixToPostfix(exprArr, calc.opStack, calc.postfix);
+        ansPreview = evaluatePostfix(calc.postfix);
+        //expr = String(ans).slice();
+        calc.postfix = [];
 
-    /*
-    WILL ADD SOMETHING THAT WOULD DISPLAY THE INITIAL ANSWER WITHOUT PRESSING '='
-    */
-
-    updateUI();
+        //console.log(`AnsPrev: ${ansPreview} | Ans: ${ans}`);
+        updateUI();
+    }
 }
 
 
@@ -184,13 +201,13 @@ function evaluatePostfix(postfix) {
         else {
             stack.push(value);
         }
-        console.log(stack);
+        //console.log(stack[0]);
     });
     return stack[0];
 }
 
 function convertInfixToPostfix(expression, opStack, postfix) {
-    let op = '+x-÷';
+    let op = calc.availableOperations;
     expression.forEach(n => {
         if (op.includes(n)) {
             let prevOp = opStack[opStack.length - 1];
