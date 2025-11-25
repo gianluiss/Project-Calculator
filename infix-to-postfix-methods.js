@@ -1,6 +1,8 @@
 const calc = {
+    availableOperations: "+*-/",
     opStack: [],
     postfix: [],
+
 
     add: function(a, b) { return a + b },
     subtract: function(a, b) { return a - b },
@@ -27,9 +29,8 @@ const calc = {
 
 
 let expr = ['5','+','6','*','2','-','8'];
-
 function convertInfixToPostfix(expression, opStack, postfix) {
-    let op = '+*-/';
+    let op = calc.availableOperations;
     expression.forEach(n => {
         if (op.includes(n)) {
             let prevOp = opStack[opStack.length - 1];
@@ -113,9 +114,31 @@ function getPrecedence(op) {
     return precedence;
 }
 
+/*
 let postfixStr = '';
 for(let i = 0; i < calc.postfix.length; i++) {
     postfixStr = postfixStr + ' ' + calc.postfix[i];
 }
 
 console.log(postfixStr);
+*/
+
+let expr2 = ['5','+','6','*','2','-','8'];
+function evaluatePostfix(postfix) {
+    let stack = [];
+    postfix.forEach( value => {
+        if(calc.availableOperations.includes(value)) {
+            let op = value;
+            let rightNum = +stack.pop();
+            let leftNum = +stack.pop();
+            stack.push(calc.operate(op, leftNum, rightNum));
+        }
+        else {
+            stack.push(value);
+        }
+        console.log(stack);
+    });
+    return stack[0];
+}
+
+console.log(evaluatePostfix(calc.postfix));

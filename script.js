@@ -1,4 +1,5 @@
 const calc = {
+    availableOperations: '+,-,÷,x',
     postfix: [],
     opStack: [],
 
@@ -15,10 +16,10 @@ const calc = {
             case '-': 
                 return this.subtract(a, b);
                 break;
-            case '*': 
+            case 'x': 
                 return this.multiply(a, b);
                 break;
-            case '/': 
+            case '÷': 
                 return this.divide(a, b);
                 break;
         }
@@ -85,6 +86,7 @@ function handleButtonClick(event) {
 
     if(btn.id === "all-clear") {
         expr = "0";
+        ans = "0";
     }
 
     if(btn.id === "clear") {
@@ -97,6 +99,7 @@ function handleButtonClick(event) {
 
         if(expr === "") {
             expr = "0";
+            ans = "0";
         }
     }
 
@@ -148,12 +151,13 @@ function handleButtonClick(event) {
 
     if(btn.id === 'equals') {
         convertInfixToPostfix(exprArr, calc.opStack, calc.postfix);
-
-        //DO CALC METHODS HERE LIKE OUTPUTTING ANSWER AND RESOLVING
-        //DO CALC METHODS HERE LIKE OUTPUTTING ANSWER AND RESOLVING
-        //DO CALC METHODS HERE LIKE OUTPUTTING ANSWER AND RESOLVING
-
         console.log(`Expr: ${expr} | Post: ${calc.postfix}`);
+
+        //DO CALC METHODS HERE LIKE OUTPUTTING ANSWER AND RESOLVING
+        //DO CALC METHODS HERE LIKE OUTPUTTING ANSWER AND RESOLVING
+        //DO CALC METHODS HERE LIKE OUTPUTTING ANSWER AND RESOLVING
+        ans = evaluatePostfix(calc.postfix);
+
         calc.postfix = [];
     }
 
@@ -168,6 +172,23 @@ function handleButtonClick(event) {
 // ------------------------------------
 // PURE LOGIC 
 // ------------------------------------
+function evaluatePostfix(postfix) {
+    let stack = [];
+    postfix.forEach( value => {
+        if(calc.availableOperations.includes(value)) {
+            let op = value;
+            let rightNum = +stack.pop();
+            let leftNum = +stack.pop();
+            stack.push(calc.operate(op, leftNum, rightNum));
+        }
+        else {
+            stack.push(value);
+        }
+        console.log(stack);
+    });
+    return stack[0];
+}
+
 function convertInfixToPostfix(expression, opStack, postfix) {
     let op = '+x-÷';
     expression.forEach(n => {
