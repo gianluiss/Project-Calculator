@@ -25,22 +25,46 @@ const calc = {
     }
 }
 
-console.log(calc.opStack.length);
 
 let expr = ['5','+','6','*','2','-','8'];
-let op = '+-*/';
 
+function convertInfixToPostfix(expression, opStack, postfix) {
+    let op = '+*-/';
+    expression.forEach(n => {
+        if (op.includes(n)) {
+            let prevOp = opStack[opStack.length - 1];
+
+            if (currentOpHasLowerOrEqualPrecedence(prevOp, n)) {
+                popWhileHigherOrEqualPrecedence(n, opStack);
+            }
+            else {
+                opStack.push(n);
+            }
+        }
+
+        if (Number(n) || n === '0') {
+            postfix.push(n);
+        }
+    });
+
+    //push remaining operators from opStack to postfix
+    while(calc.opStack.length > 0) {
+        postfix.push(opStack.pop());
+    }
+}
+
+convertInfixToPostfix(expr, calc.opStack, calc.postfix);
+
+/*
 function convertInfixToPostfix(expression) {
-    expr.forEach(n => {
+    let op = '+*-/';
+    expression.forEach(n => {
         if (op.includes(n)) {
             //console.log(`${n} is operation`);
             let opStack = calc.opStack;
             let prevOp = opStack[opStack.length - 1];
 
-            if (opStack.length === 0) {
-                opStack.push(n);
-            }
-            else if (currentOpHasLowerOrEqualPrecedence(prevOp, n)) {
+            if (currentOpHasLowerOrEqualPrecedence(prevOp, n)) {
                 popWhileHigherOrEqualPrecedence(n, opStack);
             }
             else {
@@ -53,25 +77,24 @@ function convertInfixToPostfix(expression) {
             calc.postfix.push(n);
         }
     });
-}
 
-convertInfixToPostfix(expr);
+    //push remaining operators from opStack to postfix
+    while(calc.opStack.length > 0) {
+        calc.postfix.push(calc.opStack.pop());
+    }
+}
+*/
+//convertInfixToPostfix(expr);
+
+console.log(calc.postfix);
 
 function popWhileHigherOrEqualPrecedence(op, opStack) {
-    for(let i = opStack.length-1; i >= 0; i--) {
-        if( currentOpHasLowerOrEqualPrecedence(opStack[i], op) )
-            calc.postfix.push( opStack.pop() );
+    while( currentOpHasLowerOrEqualPrecedence( opStack[opStack.length-1], op) ) {
+        calc.postfix.push( opStack.pop() );
     }
     opStack.push(op) //push current op at the end
 }
 
-//console.log(calc.opStack);
-for(let i = calc.opStack.length-1; i >= 0; i--) {
-    calc.postfix.push(calc.opStack.pop());
-}
-console.log(calc.postfix);
-
-//console.log(currentOpHasLowerOrEqualPrecedence('+','*'));
 function currentOpHasLowerOrEqualPrecedence(prevOp, currOp) {
     return getPrecedence(prevOp) > getPrecedence(currOp) || getPrecedence(prevOp) === getPrecedence(currOp);
 }

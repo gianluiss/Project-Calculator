@@ -1,6 +1,6 @@
-const calculator = {
-    numberStack: [],
-    operatorStack: [],
+const calc = {
+    postfix: [],
+    opStack: [],
 
     add: function(a, b) { return a + b },
     subtract: function(a, b) { return a - b },
@@ -25,6 +25,11 @@ const calculator = {
     }
 }
 
+/*
+let exprTest = ['5','+','7','-','2','*','2'];
+convertInfixToPostfix(exprTest, calc.opStack, calc.postfix);
+console.log(calc.postfix);
+*/
 
 // ------------------------------------
 // DOM ELEMENTS
@@ -139,18 +144,76 @@ function handleButtonClick(event) {
         }
     }
 
-    if(btn.id === 'equals') {
+    exprArr = expr.split(' ');
 
+    if(btn.id === 'equals') {
+        convertInfixToPostfix(exprArr, calc.opStack, calc.postfix);
+
+        //DO CALC METHODS HERE LIKE OUTPUTTING ANSWER AND RESOLVING
+        //DO CALC METHODS HERE LIKE OUTPUTTING ANSWER AND RESOLVING
+        //DO CALC METHODS HERE LIKE OUTPUTTING ANSWER AND RESOLVING
+
+        console.log(`Expr: ${expr} | Post: ${calc.postfix}`);
+        calc.postfix = [];
     }
 
-    exprArr = expr.split(' ');
-    //console.log(exprArr);
+    /*
+    WILL ADD SOMETHING THAT WOULD DISPLAY THE INITIAL ANSWER WITHOUT PRESSING '='
+    */
+
     updateUI();
 }
-
-console.log(Number('5 + 2'));
 
 
 // ------------------------------------
 // PURE LOGIC 
 // ------------------------------------
+function convertInfixToPostfix(expression, opStack, postfix) {
+    let op = '+x-÷';
+    expression.forEach(n => {
+        if (op.includes(n)) {
+            let prevOp = opStack[opStack.length - 1];
+
+            if (currentOpHasLowerOrEqualPrecedence(prevOp, n)) {
+                popWhileHigherOrEqualPrecedence(n, opStack);
+            }
+            else {
+                opStack.push(n);
+            }
+        }
+
+        if (Number(n) || n === '0') {
+            postfix.push(n);
+        }
+    });
+
+    //push remaining operators from opStack to postfix
+    while(calc.opStack.length > 0) {
+        postfix.push(opStack.pop());
+    }
+}
+
+function popWhileHigherOrEqualPrecedence(op, opStack) {
+    while( currentOpHasLowerOrEqualPrecedence( opStack[opStack.length-1], op) ) {
+        calc.postfix.push( opStack.pop() );
+    }
+    opStack.push(op) //push current op at the end
+}
+
+function currentOpHasLowerOrEqualPrecedence(prevOp, currOp) {
+    return getPrecedence(prevOp) > getPrecedence(currOp) || getPrecedence(prevOp) === getPrecedence(currOp);
+}
+
+function getPrecedence(op) {
+    let precedence;
+    if(op === '+' || op === '-') {
+        precedence = 1;
+    }
+    else if(op === 'x' || op === '÷' || op === '%') {
+        precedence = 2;
+    }
+    else if(op === '^') {
+        precedence = 3;
+    }
+    return precedence;
+}
