@@ -71,6 +71,9 @@ body {
 
     text-align: center;
     line-height: 85px;
+
+    user-select: none;
+    cursor: pointer;
 }
 
 #all-clear {
